@@ -1,8 +1,8 @@
 class Node {
-    constructor(data = null, rightNode = null, leftNode = null) {
+    constructor(data = null, right = null, left = null) {
         this.data = data,
-        this.rightNode = rightNode, 
-        this.leftNode = leftNode
+        this.right = right, 
+        this.left = left
     }
 }
 
@@ -12,9 +12,17 @@ class Tree {
     }
     buildTree(arr) {
         let sortedArray = mergeSort(arr)
+        return sortedArrayToBST(sortedArray)
+        
+    }
+    insert(value) {
+        
+    }
+    delete(value) {
 
     }
 }
+
 
 function mergeSort(arr) {
     if (arr.length < 2) return arr;
@@ -32,11 +40,56 @@ function mergeSort(arr) {
                 leftHalf.splice(j, 0, rightHalf[i]);
             } else if (rightHalf[i] > leftHalf[j]) {
                 i--
-            } 
-            j++
+            } else
+                continue;
+            j++;
         }
         return leftHalf
     }
 }
 
-console.log(mergeSort([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 10, 67, 6345, 324]))
+function sortedArrayToBST(sortedArray) {
+    if (sortedArray.length < 2) return new Node(sortedArray[0]);
+    else {
+        let root = new Node(sortedArray.splice(sortedArray.length / 2, 1)[0])
+        let leftHalf;
+        let rightHalf;
+        if (sortedArray.length === 1) {
+            leftHalf = sortedArrayToBST(sortedArray.splice(0, 1));
+        } else {
+            leftHalf = sortedArrayToBST(sortedArray.splice(0, sortedArray.length / 2)); 
+            rightHalf = sortedArrayToBST(sortedArray);
+        }
+        if (leftHalf.data < root.data) {
+            root.left = leftHalf
+        }
+        if (rightHalf !== undefined && rightHalf.data > root.data) {
+            root.right = rightHalf
+        }
+        return root
+    }
+}
+
+let BST = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+    }
+    console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+    }
+};
+/*
+BST.insert(10)
+BST.insert(11)
+BST.insert(6)
+BST.insert(0)
+BST.insert(2)
+*/
+prettyPrint(BST.root)
+// [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
