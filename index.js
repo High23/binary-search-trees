@@ -16,7 +16,23 @@ class Tree {
         
     }
     insert(value) {
-        
+        if (typeof value !== 'number') return 'The inputted value must be a number';
+        let root = this.root
+        while (true) {
+            if (value > root.data && root.right === null) {
+                root.right = new Node(value)
+                return;
+            } else if ( value < root.data && root.left === null) {
+                root.left = new Node(value)
+                return;
+            } else if (value > root.data) {
+                root = root.right
+            } else if (value < root.data) {
+                root = root.left
+            } else {
+                break;
+            }
+        }
     }
     delete(value) {
 
@@ -84,12 +100,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
 };
-/*
+
 BST.insert(10)
 BST.insert(11)
 BST.insert(6)
 BST.insert(0)
 BST.insert(2)
-*/
+
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
