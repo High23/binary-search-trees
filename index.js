@@ -70,14 +70,13 @@ class Tree {
             }
             nodeToBeReplaced.data = replacementNode.data;
             if (replacementNodeParent.left === replacementNode) {
-                replacementNodeParent.right = null;
+                
                 replacementNodeParent.left = replacementNode.right;
             } else if (replacementNodeParent.right === replacementNode) {
-                replacementNodeParent.left = null;
                 replacementNodeParent.right = replacementNode.left;
             }
             return;
-        } else if (nodeToBeReplaced.left !== null) {
+        } else if (nodeToBeReplaced.left !== null) { // 1 child node case
             replacementNode = nodeToBeReplaced.left
             if (parentNode.left === nodeToBeReplaced) {
                 parentNode.left = replacementNode;
@@ -102,10 +101,35 @@ class Tree {
             } else if (value < root.data) {
                 root = root.left
             } else {
+                console.log(root)
                 break;
             }
         }
-        console.log(root)
+    }
+    levelOrder(func) {
+        let queue = [this.root]
+        while (true) {
+            if (queue.length === 0) {
+                break;
+            }
+            if (queue[0].left !== null) {
+                queue.push(queue[0].left)
+            }
+            if (queue[0].right !== null) {
+                queue.push(queue[0].right)
+            }
+            func(queue[0])
+            queue.shift()
+        }
+    }
+    inorder() {
+        
+    }
+    preorder() {
+
+    }
+    postorder() {
+        
     }
 }
 
@@ -170,6 +194,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let BST = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
+/*
 BST.insert(10)
 BST.insert(11)
 BST.insert(6)
@@ -179,6 +204,9 @@ BST.insert(212)
 BST.insert(7000)
 
 
-BST.delete(2)
+BST.delete(4) */
+BST.levelOrder(function test(node){
+    console.log(node)
+})
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
