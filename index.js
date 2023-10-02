@@ -122,14 +122,23 @@ class Tree {
             queue.shift()
         }
     }
-    inorder() {
-        
+    inorder(func, node = this.root) {
+        if (node === null) return;
+        this.inorder(func, node.left);
+        func(node);
+        this.inorder(func, node.right);
     }
-    preorder() {
-
+    preorder(func, node = this.root) {
+        if (node === null) return;
+        func(node);
+        this.preorder(func, node.left);
+        this.preorder(func, node.right);
     }
-    postorder() {
-        
+    postorder(func, node = this.root) {
+        if (node === null) return;
+        this.postorder(func, node.left);
+        this.postorder(func, node.right);
+        func(node);
     }
 }
 
@@ -204,9 +213,18 @@ BST.insert(212)
 BST.insert(7000)
 
 
-BST.delete(4) */
+BST.delete(4) 
 BST.levelOrder(function test(node){
     console.log(node)
 })
+BST.inorder(function test(node){
+    console.log(node)
+})
+BST.preorder(function test(node){
+    console.log(node)
+})
+BST.postorder(function test(node){
+    console.log(node)
+}) */
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
