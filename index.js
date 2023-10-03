@@ -293,17 +293,19 @@ function mergeSort(arr) {
 function sortedArrayToBST(sortedArray) {
     if (sortedArray.length < 2) return new Node(sortedArray[0]);
     else {
-        let root = new Node(sortedArray.splice(sortedArray.length / 2, 1)[0])
+        let root = new Node(sortedArray.splice(sortedArray.length / 2 - 0.5, 1)[0])
         let leftHalf;
         let rightHalf;
-        if (sortedArray.length === 1) {
-            leftHalf = sortedArrayToBST(sortedArray.splice(0, 1));
-        } else {
+        if (sortedArray.length > 1) {
             leftHalf = sortedArrayToBST(sortedArray.splice(0, sortedArray.length / 2)); 
             rightHalf = sortedArrayToBST(sortedArray);
+        } else {
+            leftHalf = sortedArrayToBST(sortedArray.splice(0, 1));
         }
         if (leftHalf.data < root.data) {
             root.left = leftHalf
+        } else if (leftHalf.data > root.data) {
+            root.right = leftHalf
         }
         if (rightHalf !== undefined && rightHalf.data > root.data) {
             root.right = rightHalf
@@ -336,7 +338,6 @@ BST.insert(2)
 BST.insert(212)
 BST.insert(7000)
 /*
-
 BST.delete(4) 
 
 BST.inorder(function test(node){
@@ -348,9 +349,9 @@ BST.preorder(function test(node){
 BST.postorder(function test(node){
     console.log(node)
 }) 
-console.log(BST.preorder())*/
+console.log(BST.preorder())
 console.log(BST.height(BST.find(8)))
-console.log(BST.isBalanced())
+console.log(BST.isBalanced())*/
 BST.rebalance()
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
