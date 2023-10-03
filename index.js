@@ -101,44 +101,109 @@ class Tree {
             } else if (value < root.data) {
                 root = root.left
             } else {
-                console.log(root)
-                break;
+                return root
             }
         }
     }
     levelOrder(func) {
-        let queue = [this.root]
-        while (true) {
-            if (queue.length === 0) {
-                break;
+        let queue = [this.root];
+        if (typeof func === 'function') {
+            while (true) {
+                if (queue.length === 0) {
+                    return;
+                }
+                if (queue[0].left !== null) {
+                    queue.push(queue[0].left)
+                }
+                if (queue[0].right !== null) {
+                    queue.push(queue[0].right)
+                }
+                func(queue[0])
+                queue.shift()
             }
-            if (queue[0].left !== null) {
-                queue.push(queue[0].left)
+        } else {
+            let arrayOfValues = [];
+            while (true){
+                if (queue.length === 0) {
+                    return arrayOfValues;
+                }
+                if (queue[0].left !== null) {
+                    queue.push(queue[0].left)
+                }
+                if (queue[0].right !== null) {
+                    queue.push(queue[0].right)
+                }
+                arrayOfValues.push(queue[0].data)
+                queue.shift()
             }
-            if (queue[0].right !== null) {
-                queue.push(queue[0].right)
-            }
-            func(queue[0])
-            queue.shift()
         }
     }
+    
     inorder(func, node = this.root) {
         if (node === null) return;
-        this.inorder(func, node.left);
-        func(node);
-        this.inorder(func, node.right);
+        if (typeof func === 'function') {
+            this.inorder(func, node.left);
+            func(node);
+            this.inorder(func, node.right);
+        } else {
+            let arrayOfValues = [];
+            let leftNode = this.inorder(func, node.left);
+            if (Array.isArray(leftNode)) {
+                arrayOfValues = arrayOfValues.concat(leftNode)
+            }
+            arrayOfValues.push(node.data)
+            let rightNode = this.inorder(func, node.right);
+            if (Array.isArray(rightNode)) {
+                arrayOfValues = arrayOfValues.concat(rightNode)
+            }
+            return arrayOfValues
+        }
+        
     }
     preorder(func, node = this.root) {
         if (node === null) return;
-        func(node);
-        this.preorder(func, node.left);
-        this.preorder(func, node.right);
+        if (typeof func === 'function') {
+            func(node);
+            this.preorder(func, node.left);
+            this.preorder(func, node.right);
+        } else {
+            let arrayOfValues = [];
+            arrayOfValues.push(node.data)
+            let leftNode = this.preorder(func, node.left);
+            if (Array.isArray(leftNode)) {
+                arrayOfValues = arrayOfValues.concat(leftNode)
+            }
+            let rightNode = this.preorder(func, node.right);
+            if (Array.isArray(rightNode)) {
+                arrayOfValues = arrayOfValues.concat(rightNode)
+            }
+            return arrayOfValues
+        }
     }
     postorder(func, node = this.root) {
         if (node === null) return;
-        this.postorder(func, node.left);
-        this.postorder(func, node.right);
-        func(node);
+        if (typeof func === 'function') {
+            this.postorder(func, node.left);
+            this.postorder(func, node.right);
+            func(node);
+        } else {
+            let arrayOfValues = [];
+            let leftNode = this.postorder(func, node.left);
+            if (Array.isArray(leftNode)) {
+                arrayOfValues = arrayOfValues.concat(leftNode)
+            }
+            let rightNode = this.postorder(func, node.right);
+            if (Array.isArray(rightNode)) {
+                arrayOfValues = arrayOfValues.concat(rightNode)
+            }
+            arrayOfValues.push(node.data)
+            return arrayOfValues
+        }
+    }
+    height(node) {
+    }
+    depth(node) {
+
     }
 }
 
@@ -214,9 +279,7 @@ BST.insert(7000)
 
 
 BST.delete(4) 
-BST.levelOrder(function test(node){
-    console.log(node)
-})
+
 BST.inorder(function test(node){
     console.log(node)
 })
@@ -226,5 +289,7 @@ BST.preorder(function test(node){
 BST.postorder(function test(node){
     console.log(node)
 }) */
+console.log(BST.preorder())
+console.log(BST.height(BST.find(23)))
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
