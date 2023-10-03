@@ -201,9 +201,33 @@ class Tree {
         }
     }
     height(node) {
+        if (node === null) return 0;
+        else {
+            let height;
+            let leftHeight = this.height(node.left)
+            let rightHeight = this.height(node.right)
+            if (leftHeight > rightHeight) {
+                height = leftHeight + 1;
+            } else {
+                height = rightHeight + 1;
+            }
+            return height
+        }
     }
     depth(node) {
-
+        let root = this.root
+        let depth = 0;
+        while (true) {
+            if (node.data > root.data) {
+                depth++
+                root = root.right
+            } else if (node.data < root.data) {
+                depth++
+                root = root.left
+            } else {
+                return depth;
+            }
+        }
     }
 }
 
@@ -213,7 +237,6 @@ function mergeSort(arr) {
         let leftHalf = mergeSort(arr.splice(0, Math.floor(arr.length / 2))); // imagine length = 2
         let rightHalf = mergeSort(arr) // imagine length = 3
         let j = 0;
-        /**/
         for (let i = 0; i < rightHalf.length; i++) {
             if (leftHalf.includes(rightHalf[i])) {
                 continue;
@@ -268,7 +291,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 let BST = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 
-/*
+
 BST.insert(10)
 BST.insert(11)
 BST.insert(6)
@@ -276,7 +299,7 @@ BST.insert(0)
 BST.insert(2)
 BST.insert(212)
 BST.insert(7000)
-
+/*
 
 BST.delete(4) 
 
@@ -288,8 +311,8 @@ BST.preorder(function test(node){
 })
 BST.postorder(function test(node){
     console.log(node)
-}) */
-console.log(BST.preorder())
-console.log(BST.height(BST.find(23)))
+}) 
+console.log(BST.preorder())*/
+console.log(BST.height(BST.find(8)))
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
