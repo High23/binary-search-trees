@@ -92,7 +92,7 @@ class Tree {
             parentNode.right = null;
         }
     }
-    find(value) {
+    find(value = this.root.data) {
         if (typeof value !== 'number') return 'The inputted value must be a number';
         let root = this.root
         while (true) {
@@ -229,6 +229,42 @@ class Tree {
             }
         }
     }
+    isBalanced(node = this.root) {
+        if (node === null) return 0;
+        else {
+            let height;
+            let leftHeight = this.isBalanced(node.left)
+            let rightHeight = this.isBalanced(node.right)
+            if (leftHeight > rightHeight) {
+                height = leftHeight + 1;
+            } else {
+                height = rightHeight + 1;
+            }
+            if (Math.abs(leftHeight - rightHeight) > 1) return false;
+            else if (leftHeight === false || rightHeight === false) return false;
+            return height
+        }
+    }
+    rebalance() {
+        if (this.isBalanced() ===  false) {
+            let queue = [this.root];
+            let arrayOfValues = [];
+            while (true){
+                if (queue.length === 0) {
+                    break;
+                }
+                if (queue[0].left !== null) {
+                    queue.push(queue[0].left)
+                }
+                if (queue[0].right !== null) {
+                    queue.push(queue[0].right)
+                }
+                arrayOfValues.push(queue[0].data)
+                queue.shift()
+            }
+            this.root = this.buildTree(arrayOfValues);
+        }
+    }
 }
 
 function mergeSort(arr) {
@@ -314,5 +350,7 @@ BST.postorder(function test(node){
 }) 
 console.log(BST.preorder())*/
 console.log(BST.height(BST.find(8)))
+console.log(BST.isBalanced())
+BST.rebalance()
 prettyPrint(BST.root)
 // [1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]
